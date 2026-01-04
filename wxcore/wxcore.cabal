@@ -19,8 +19,8 @@ description:
 homepage:     https://wiki.haskell.org/WxHaskell
 bug-reports:  https://sourceforge.net/p/wxhaskell/bugs/
 
-cabal-version: >= 1.24
-build-type:    Custom
+cabal-version: 2.0
+build-type:    Configure
 
 extra-tmp-files:
   src/haskell/Graphics/UI/WXCore/WxcClassInfo.hs
@@ -28,10 +28,6 @@ extra-tmp-files:
   src/haskell/Graphics/UI/WXCore/WxcClasses.hs
   src/haskell/Graphics/UI/WXCore/WxcClassesAL.hs
   src/haskell/Graphics/UI/WXCore/WxcClassesMZ.hs
-
-flag splitBase
-  description:  use new split base
-  default:      True
 
 library
   default-language:
@@ -64,6 +60,13 @@ library
     Graphics.UI.WXCore.WxcObject
     Graphics.UI.WXCore.WxcTypes
 
+  autogen-modules:
+    Graphics.UI.WXCore.WxcClassInfo
+    Graphics.UI.WXCore.WxcClassTypes
+    Graphics.UI.WXCore.WxcClasses
+    Graphics.UI.WXCore.WxcClassesAL
+    Graphics.UI.WXCore.WxcClassesMZ
+
   other-modules:
     Graphics.UI.WXCore.GHCiSupport
 
@@ -71,33 +74,26 @@ library
     Carbon
 
   build-depends:
+    array >= 0.2 && < 0.6,
+    base >= 4 && < 5,
+    containers >= 0.2 && < 0.7,
     bytestring,
     filepath,
     parsec,
     stm,
-    wxc >= 0.92,
-    wxdirect >= 0.91,
     directory,
     time
 
-  if flag(splitBase)
-    build-depends:
-      array >= 0.2 && < 0.6,
-      base >= 4 && < 5,
-      containers >= 0.2 && < 0.7
-  else
-    build-depends:
-      array >= 0.1 && < 0.3,
-      base >= 3 && < 4,
-      containers >= 0.1 && < 0.3
+  pkgconfig-depends:
+    wxc
+
+  -- Find GL/glx.h include path using pkg-config
+  if os(freebsd) || os(netbsd)
+    pkgconfig-depends: gl
+
+  build-tool-depends:
+    wxdirect:wxdirect >= 0.91
+
+  extra-libraries: wxc
 
   ghc-options: -Wall
-
-
-custom-setup
-  setup-depends:
-    base,
-    Cabal,
-    process,
-    directory,
-    filepath

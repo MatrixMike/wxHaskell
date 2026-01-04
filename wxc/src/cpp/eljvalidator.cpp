@@ -1,4 +1,4 @@
-#include "wrapper.h"
+#include "wxc/wrapper.h"
 
 extern "C"
 {
@@ -33,7 +33,7 @@ EWXWEXPORT(void*,wxValidator_GetWindow)(void* self)
 	return (void*)((wxValidator*)self)->GetWindow();
 }
 	
-EWXWEXPORT(void,wxValidator_SetWindow)(void* self,wxWindowBase* win)
+EWXWEXPORT(void,wxValidator_SetWindow)(void* self,wxWindow* win)
 {
 	((wxValidator*)self)->SetWindow(win);
 }

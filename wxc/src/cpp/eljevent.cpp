@@ -1,4 +1,4 @@
-#include "wrapper.h"
+#include "wxc/wrapper.h"
 #include "wx/process.h"
 #include "wx/dialup.h"
 
@@ -1067,8 +1067,7 @@ EWXWEXPORT(bool,wxPropertyGridEvent_HasProperty)(wxPropertyGridEvent* self)
 EWXWEXPORT(wxPGProperty*,wxPropertyGridEvent_GetProperty)(wxPropertyGridEvent* self)
 {
 #if defined(wxUSE_PROPGRID)
-        wxPGProperty* const prop = self->GetProperty();
-        return prop == 0 ? new wxPGProperty() : prop;
+        return self->GetProperty();
 #else
         return NULL;
 #endif
